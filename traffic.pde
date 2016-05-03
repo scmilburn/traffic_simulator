@@ -126,9 +126,10 @@ void red_light(Car c, int intersection_start, int direction){
   // if the car is before the intersection or past it, keep driving
   // else stop
   if (direction > 0){
-    if (c.getPos() < intersection_start || c.getPos() + 40 > intersection_start){
+    if (c.getPos() < intersection_start - car_height || c.getPos() > intersection_start + 100){
       c.drive(c.get_start_v());
     } else{
+      print("stopping");
       c.drive(0);
     }
     
@@ -136,7 +137,7 @@ void red_light(Car c, int intersection_start, int direction){
   // if the car is before the intersection or past it, keep driving
   // else stop
   }else {
-    if (c.getPos() > intersection_start || c.getPos() - 40 < intersection_start-car_height){
+    if (c.getPos() > intersection_start || c.getPos() < intersection_start-car_height){
       c.drive(c.get_start_v());
     } else{
       c.drive(0);
