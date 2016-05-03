@@ -3,7 +3,6 @@ class Car{
   int start_x, start_y, start_v;
   int w, h; 
   color c;
-  int pos; //the changing position var 
   String dir;
   
   Car (int x, int y, int w , int h, int v, color c, String dir){
@@ -16,18 +15,15 @@ class Car{
     this.start_x = x;
     this.start_y = y;
     this.start_v = v;
-    this.dir = dir;
-    if (dir.equals("h")){
-      this.pos = x; 
-    }else{
-      this.pos = y;
-    }
-    
-    
+    this.dir = dir;    
   }
   
   int getPos(){
-    return this.pos;  
+    if (this.dir.equals("h")){
+      return x; 
+    }else{
+      return y;
+    }
   }
   
   int getX(){

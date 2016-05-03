@@ -53,7 +53,9 @@ void draw(){
   whatdo(car, l, inter_st, 1); //horizontal
   whatdo(right, l, inter_end, -1); //vertical
   whatdo(top, l2, inter_st, 1); //h
-  whatdo(bot, l2, inter_st, -1); //v
+  whatdo(bot, l2, inter_end, -1); //v
+  print(car.getPos());
+  print('\n');
 }
 
 // insersection marks beginning of intersection, direction is pos/neg depending on movement
@@ -116,21 +118,27 @@ void yellow_light(Car c, int intersection_start, int direction){
           c.drive(c.get_start_v());  
         }    
       }
-      
     }
 }
 
 void red_light(Car c, int intersection_start, int direction){
-  if (direction < 0){
-    if (intersection_start > c.getPos() || c.getPos() > intersection_start){
+  // if car has a positive velocity
+  // if the car is before the intersection or past it, keep driving
+  // else stop
+  if (direction > 0){
+    if (c.getPos() < intersection_start || c.getPos() + 40 > intersection_start){
       c.drive(c.get_start_v());
-    }else{
+    } else{
       c.drive(0);
     }
+    
+  //if car has negative velocity
+  // if the car is before the intersection or past it, keep driving
+  // else stop
   }else {
-    if (intersection_start < c.getPos() || c.getPos() < intersection_start-car_height){
+    if (c.getPos() > intersection_start || c.getPos() - 40 < intersection_start-car_height){
       c.drive(c.get_start_v());
-    }else{
+    } else{
       c.drive(0);
     }
   }  
