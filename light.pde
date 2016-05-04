@@ -33,6 +33,10 @@ class Light{
    ellipse(this.x+15, this.y+75, 20, 20);
  }
  
+ void toggleLight(String col){
+   this.col = col;  
+ }
+ 
  void toggleLight(){
   if(this.col.equals("red")){
    this.col = "green"; 
