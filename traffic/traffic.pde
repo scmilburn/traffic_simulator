@@ -133,14 +133,14 @@ void yellow_light(Car c, int intersection_start, int direction){
 
 void red_light(Car c, int intersection_start, int direction){
   if (direction < 0){
-    if (c.getPos() < intersection_start - car_height || c.getPos() + 40 > intersection_start + 100){
+    if (c.getPos() < intersection_start - car_height || c.getPos() + 100 > intersection_start + 100){
       c.drive(c.get_start_v());
     }else{
       print("stopping");
       c.drive(0);
     }
   }else {
-    if (c.getPos() > intersection_start || c.getPos() - 40 < intersection_start-car_height){
+    if (c.getPos() > intersection_start || c.getPos() < intersection_start-car_height){
       c.drive(c.get_start_v());
     }else{
       c.drive(0);
@@ -151,15 +151,19 @@ void red_light(Car c, int intersection_start, int direction){
 void lightSync(){
    int time = second();
    if(time == 0){
-     l.toggleLight("green");
      l2.toggleLight("red");
+   }
+   else if(time == 2){
+    l.toggleLight("green"); 
    }
    else if(time == 25){
      l.toggleLight("yellow");
    }
    else if(time == 30){
     l.toggleLight("red");
-    l2.toggleLight("green");
+   }
+   else if(time == 32){
+    l2.toggleLight("green"); 
    }
    else if(time == 59){
     l2.toggleLight("yellow"); 

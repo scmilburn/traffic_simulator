@@ -1,2 +1,6 @@
-# traffic_simulator
-basic traffic simulator using processing
+# Traffic Simulator
+This is a very basic traffic simulator for a class project. The project was to demonstrates OOP in some sort of game/simulation.  
+
+![alt tag](https://raw.githubusercontent.com/scmilburn/traffic_simulator/c27d87b0e613ebb9d16bba92b85517f439d5f39c/traffic.gif)
+
+Written using [Processing](https://processing.org) Java language for easy visualization. 
