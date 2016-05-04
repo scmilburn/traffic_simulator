@@ -10,7 +10,8 @@ int left_lane = 325;
 int inter_st = 300;
 int inter_end = 500;
 
-Car car = new Car(0, right_lane, car_height, car_width, 2, random_color(255), "h"); //left  //(init_x, init_y, car_width, car_len, vx, vy, color)
+//(init_x, init_y, car_width, car_len, vx, vy, color, direction)
+Car car = new Car(0, right_lane, car_height, car_width, 2, random_color(255), "h"); //left  
 Car top = new Car(left_lane, 0, car_width, car_height, 2, random_color(255), "v"); //top
 Car bot = new Car(right_lane, 770 - car_height, car_width, car_height, -2, random_color(255), "v"); //bottom
 Car right = new Car(780 - car_width, left_lane, car_height, car_width, -2, random_color(255), "h"); //right
@@ -54,8 +55,6 @@ void draw(){
   whatdo(right, l, inter_end, -1); //vertical
   whatdo(top, l2, inter_st, 1); //h
   whatdo(bot, l2, inter_end, -1); //v
-  print(car.getPos());
-  print('\n');
 }
 
 // insersection marks beginning of intersection, direction is pos/neg depending on movement
@@ -74,78 +73,71 @@ void whatdo(Car c, Light l, int intersection_start, int direction){
 }
   
 void yellow_light(Car c, int intersection_start, int direction){
-  if (direction < 0){ //going backwards
-        if (c.getDir().equals("h")){ //side to side
-          if (c.getX() > intersection_start){
-            if (c.getV() != 0 &&  c.getV()/2 != 0){
-              c.drive(c.getV()/2); 
-            }else {
-            c.drive(c.get_start_v()); 
-          }    
-        } else{
-          c.drive(c.get_start_v());  
+  
+  switch(direction){
+    // positive velocity car
+    case 1:
+      if (c.getPos() < intersection_start){
+        if (c.getV() != 0 &&  c.getV()/2 != 0){
+          c.drive(c.getV()/2); 
+        }else {
+          c.drive(c.get_start_v()); 
         }
-      } else { //up down driving car going backwards
-        if (c.getY() > intersection_start){
-          if (c.getV() != 0 &&  c.getV()/2 != 0){
-            c.drive(c.getV()/2); 
-          }else {
-            c.drive(c.get_start_v()); 
-          }    
-        } else{
-          c.drive(c.get_start_v());  
+      } else{
+        c.drive(c.get_start_v());  
+      }     
+      break;
+    
+    //negative velocity car
+    case -1:
+      if (c.getPos() > intersection_start){
+        if (c.getV() != 0 &&  c.getV()/2 != 0){
+          c.drive(c.getV()/2); 
+        }else {
+          c.drive(c.get_start_v()); 
         }    
+      } else{
+        c.drive(c.get_start_v());  
       }
-    } else{//going forward
-      if (c.getDir().equals("h")){ //side to side
-        if (c.getX() < intersection_start){
-          if (c.getV() != 0 &&  c.getV()/2 != 0){
-            c.drive(c.getV()/2); 
-          }else {
-            c.drive(c.get_start_v()); 
-          }    
-        } else{
-          c.drive(c.get_start_v());  
-        }
-      } else { //up down driving car going forward
-        if (c.getY() < intersection_start){
-          if (c.getV() != 0 &&  c.getV()/2 != 0){
-            c.drive(c.getV()/2); 
-          }else {
-            c.drive(c.get_start_v()); 
-          }    
-        } else{
-          c.drive(c.get_start_v());  
-        }    
-      }
-    }
+      break;
+  }
 }
 
 void red_light(Car c, int intersection_start, int direction){
+  
+  switch(direction){
   // if car has a positive velocity
   // if the car is before the intersection or past it, keep driving
   // else stop
-  if (direction > 0){
-    if (c.getPos() < intersection_start - car_height || c.getPos() > intersection_start + 100){
-      c.drive(c.get_start_v());
-    } else{
-      print("stopping");
-      c.drive(0);
-    }
-    
+    case 1:
+      if (c.getPos() < intersection_start - car_height || c.getPos() > intersection_start + 100){
+        c.drive(c.get_start_v());
+      } else{
+        c.drive(0);
+      }
+      break;
+      
   //if car has negative velocity
   // if the car is before the intersection or past it, keep driving
   // else stop
-  }else {
-    if (c.getPos() > intersection_start || c.getPos() < intersection_start-car_height){
-      c.drive(c.get_start_v());
-    } else{
-      c.drive(0);
-    }
+    case -1:
+      if (c.getPos() > intersection_start || c.getPos() < intersection_start-car_height){
+        c.drive(c.get_start_v());
+      } else{
+        c.drive(0);
+      }
+      break;
+    
   }  
 }
 
 void mouseClicked(){
   l.toggleLight();
-  l2.toggleLight();
+  if(l.getState().equals("red")){
+    l2.toggleLight("green");    
+  }
+  if(l.getState().equals("green")){
+    l2.toggleLight("red");
+  }
+  
 }
