@@ -9,6 +9,8 @@ int left_lane = 325;
 //intersection boundaries
 int inter_st = 300;
 int inter_end = 500;
+int time = second();
+
 
 //(init_x, init_y, car_width, car_len, vx, vy, color, direction)
 Car car = new Car(0, right_lane, car_height, car_width, 2, random_color(255), "h"); //left  
@@ -33,6 +35,13 @@ void drawRoad(){
  rect(395,0,10,300); //top 
  rect(395,500,10,300); //bottom
  rect(500,395,300,10); //right
+ 
+ fill(240);
+ rect(300, 295, 200, 5);
+ rect(300, 500, 200, 5);
+ rect(295, 300, 5, 200);
+ rect(500, 300, 5, 200);
+ 
 }
 
 void setup(){
@@ -44,6 +53,7 @@ void draw(){
   drawRoad();
   l.drawLight();
   l2.drawLight();
+  lightSync();
 
   car.drawCar();
   bot.drawCar();
@@ -73,7 +83,6 @@ void whatdo(Car c, Light l, int intersection_start, int direction){
 }
   
 void yellow_light(Car c, int intersection_start, int direction){
-  
   switch(direction){
     // positive velocity car
     case 1:
@@ -104,7 +113,6 @@ void yellow_light(Car c, int intersection_start, int direction){
 }
 
 void red_light(Car c, int intersection_start, int direction){
-  
   switch(direction){
   // if car has a positive velocity
   // if the car is before the intersection or past it, keep driving
@@ -131,13 +139,28 @@ void red_light(Car c, int intersection_start, int direction){
   }  
 }
 
+void lightSync(){
+   int time = second();
+   if(time == 0){
+     l2.toggleLight("red");
+   }
+   else if(time == 2){
+    l.toggleLight("green"); 
+   }
+   else if(time == 25){
+     l.toggleLight("yellow");
+   }
+   else if(time == 30){
+    l.toggleLight("red");
+   }
+   else if(time == 32){
+    l2.toggleLight("green"); 
+   }
+   else if(time == 59){
+    l2.toggleLight("yellow"); 
+   }
+}
+
 void mouseClicked(){
   l.toggleLight();
-  if(l.getState().equals("red")){
-    l2.toggleLight("green");    
-  }
-  if(l.getState().equals("green")){
-    l2.toggleLight("red");
-  }
-  
 }
